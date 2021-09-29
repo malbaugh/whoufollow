@@ -1,0 +1,49 @@
+html,body {
+  overflow-y: hidden !important;
+  margin: 0px !important;
+  height: 100% !important;
+  padding: 0px !important;
+  overflow-x: hidden !important;
+  font-family:"Lato", sans-serif !important;
+  color:#666;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f4f4f4;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background:#EC3939;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #EC3939; 
+}
+
+mat-card, mat-toolbar, mat-form-field, mat-toolbar-row, mat-tab-group, google-chart, mat-label, mat-card-title, mat-card-subtitle, mat-select, mat-option {
+  font-family:"Lato", sans-serif !important;
+}
+.mat-button, .mat-raised-button, .mat-tab-label, .mat-menu-item, .matInput, .matPrefix {
+  font-family:"Lato", sans-serif !important;
+}
+
+.app-logo {
+  height: 40px;
+  width: auto;
+  padding: 8px;
+  display: block;
+  margin: 0 auto;
+}
+.white-color {
+	color: #f4f4f4 !important;
+}
+.icon-with-text {
+  padding-right:16px !important;
+}

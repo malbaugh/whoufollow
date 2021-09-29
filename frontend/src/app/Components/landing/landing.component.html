@@ -1,0 +1,200 @@
+<div *ngIf="!dataLoaded" class="data-loader">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div *ngIf="(!loaded) && (dataLoaded)" class="data-loader-dialog"><mat-spinner mode="indeterminate"></mat-spinner></div>
+
+<html class="landing-html" *ngIf="dataLoaded && !readyToRank && !forceStatsView" lang="en">
+  <body class="landing-body">
+    <section class="light section">
+      <h2 class="section-text">Who U Follow?</h2>
+      <p class="sub-section-text">Who are your sources of information? These should be people you trust to provide credible information on the things you care about - including business, entrepreneurship, engineering, philosophy, health and fitness. This could be podcasts, personalities, media outlets, entrepreneurs, etc.</p>
+      <p class="sub-section-text"><b>Please enter 5 sources you follow today and press enter between each source. A new chip will appear around each source you list.</b></p>
+    </section>
+    <section class="light section orient-contents-vertically">
+      <mat-form-field appearance="outline" color="accent">
+        <mat-label>Name of Source</mat-label>
+        <mat-chip-list class="small-divider" #chipList aria-label="Source names" multiple>
+            <mat-chip color="accent" selected>
+            Your News Source
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <mat-chip
+              *ngFor="let name of sourceNames"
+              [selected]="name"
+              [value]="name"
+              (removed)="RemoveSource(name)">
+            {{name}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input
+            placeholder="New source..."
+            [matChipInputFor]="chipList"
+            (matChipInputTokenEnd)="AddSourceToList($event)"
+            [formControl]="sourceControl" >
+        </mat-chip-list>
+        <mat-hint class="small-divider" align="end">{{sourceNames.length}} / 3</mat-hint>
+      </mat-form-field>
+
+      <button (click)="SubmitSources()" [disabled]="sourceNames.length < 3" mat-raised-button color="accent">Submit</button>
+    </section>
+  </body>
+</html>
+
+<div class="item-html" *ngIf="dataLoaded && readyToRank && !forceStatsView" lang="en">
+  <div class="item-body">
+    <h2 class="question-header">{{source.Name}}</h2>
+    <div class="action-list orient-contents-horizontally medium-divider">
+      <mat-list class="no-padding" *ngFor="let action of sourceActions">
+        <a [class]="action.Class" [routerLink]="" class="orient-contents-vertically" (click)="SelectCredibility(action)">
+          <mat-icon color="{{action.Color}}" class="action-icon" [inline]="true">{{action.Icon}}</mat-icon>
+          <h3 class="action-header">{{action.Title}}</h3>
+        </a>
+      </mat-list>
+    </div>
+    <div class="orient-contents-horizontally medium-divider">
+      <span class="horizontal-spacer"></span>
+      <button (click)="SeeStats()" color="accent" [disabled]="sourceReviewCount < 5" mat-raised-button><mat-icon class="icon-with-text">analytics</mat-icon>See Results</button>
+      <span class="horizontal-spacer"></span>
+    </div>
+    
+  </div>
+</div>
+
+<html class="landing-html" *ngIf="dataLoaded && forceStatsView" lang="en">
+  <body class="landing-body orient-contents-vertically">
+    <section class="light section">
+      <h1 class="section-text">Source Rankings</h1>
+      <p class="sub-section-text">Thank you for your contribution! Here are some of the top ranking sources.</p>
+      <div class="orient-contents-horizontally">
+        <span class="horizontal-spacer"></span>
+        <button (click)="RankMore()" color="accent" mat-raised-button><mat-icon class="icon-with-text">poll</mat-icon>Rank More Sources</button>
+        <span class="horizontal-spacer"></span>
+      </div>
+    </section>
+
+    <section class="dark section">
+      <h3 class="section-text">Most Credible Sources</h3>
+      <div class="action-list orient-contents-horizontally">
+        <mat-list *ngFor="let source of credibleSources">
+          <div class="light source-card">
+            <p class="source-name">{{source.Name}}</p>
+            <p class="source-overall-score">{{source.CredibilitySum}}</p>
+            <div class="orient-contents-horizontally">
+              <p class="source-vote-label">Credible</p>
+              <span class="horizontal-spacer"></span>
+              <p class="source-vote-label bold-text">{{source.CredibilityRank}}</p>
+            </div>
+            <mat-progress-bar class="source-vote-progress-bar" color="accent" mode="determinate" value="{{source.CredibilityValue()}}"></mat-progress-bar>
+            
+            <div class="orient-contents-horizontally">
+              <p class="source-vote-label">Not Credible</p>
+              <span class="horizontal-spacer"></span>
+              <p class="source-vote-label bold-text">{{source.UncredibilityRank}}</p>
+            </div>
+            <mat-progress-bar class="source-vote-progress-bar" color="primary" mode="determinate" value="{{source.UncredibilityValue()}}"></mat-progress-bar>
+
+            <div class="orient-contents-horizontally">
+              <p class="source-vote-label">Votes</p>
+              <span class="horizontal-spacer"></span>
+              <p class="bold-text">{{source.VoteCount()}}</p>
+            </div>
+          </div>
+        </mat-list>
+      </div>
+    </section>
+
+    <section class="light section">
+      <h3 class="section-text">Most Popular Sources</h3>
+      <div class="action-list orient-contents-horizontally"> 
+        <mat-list *ngFor="let source of popularSources">
+          <div class="dark source-card">
+            <p class="source-name">{{source.Name}}</p>
+            <p class="source-overall-score">{{source.CredibilitySum}}</p>
+            <div class="orient-contents-horizontally">
+              <p class="source-vote-label">Credible</p>
+              <span class="horizontal-spacer"></span>
+              <p class="source-vote-label bold-text">{{source.CredibilityRank}}</p>
+            </div>
+            <mat-progress-bar class="source-vote-progress-bar" color="accent" mode="determinate" value="{{source.CredibilityValue()}}"></mat-progress-bar>
+            
+            <div class="orient-contents-horizontally">
+              <p class="source-vote-label">Not Credible</p>
+              <span class="horizontal-spacer"></span>
+              <p class="source-vote-label bold-text">{{source.UncredibilityRank}}</p>
+            </div>
+            <mat-progress-bar class="source-vote-progress-bar" color="primary" mode="determinate" value="{{source.UncredibilityValue()}}"></mat-progress-bar>
+
+            <div class="orient-contents-horizontally">
+              <p class="source-vote-label">Votes</p>
+              <span class="horizontal-spacer"></span>
+              <p class="bold-text">{{source.VoteCount()}}</p>
+            </div>
+          </div>
+        </mat-list>
+      </div>
+    </section>
+    
+    <section class="dark section">
+      <h3 class="section-text">Least Credible Sources</h3>
+      <div class="action-list orient-contents-horizontally"> 
+        <mat-list *ngFor="let source of uncredibleSources">
+          <div class="light source-card">
+            <p class="source-name">{{source.Name}}</p>
+            <p class="source-overall-score">{{source.CredibilitySum}}</p>
+            <div class="orient-contents-horizontally">
+              <p class="source-vote-label">Credible</p>
+              <span class="horizontal-spacer"></span>
+              <p class="source-vote-label bold-text">{{source.CredibilityRank}}</p>
+            </div>
+            <mat-progress-bar class="source-vote-progress-bar" color="accent" mode="determinate" value="{{source.CredibilityValue()}}"></mat-progress-bar>
+            
+            <div class="orient-contents-horizontally">
+              <p class="source-vote-label">Not Credible</p>
+              <span class="horizontal-spacer"></span>
+              <p class="source-vote-label bold-text">{{source.UncredibilityRank}}</p>
+            </div>
+            <mat-progress-bar class="source-vote-progress-bar" color="primary" mode="determinate" value="{{source.UncredibilityValue()}}"></mat-progress-bar>
+
+            <div class="orient-contents-horizontally">
+              <p class="source-vote-label">Votes</p>
+              <span class="horizontal-spacer"></span>
+              <p class="bold-text">{{source.VoteCount()}}</p>
+            </div>
+          </div>
+        </mat-list>
+      </div>
+    </section>
+
+    <section class="light section">
+      <h3 class="section-text">Least Popular Sources</h3>
+      <div class="action-list orient-contents-horizontally">
+        <mat-list *ngFor="let source of unpopularSources">
+          <div class="dark source-card">
+            <p class="source-name">{{source.Name}}</p>
+            <p class="source-overall-score">{{source.CredibilitySum}}</p>
+            <div class="orient-contents-horizontally">
+              <p class="source-vote-label">Credible</p>
+              <span class="horizontal-spacer"></span>
+              <p class="source-vote-label bold-text">{{source.CredibilityRank}}</p>
+            </div>
+            <mat-progress-bar class="source-vote-progress-bar" color="accent" mode="determinate" value="{{source.CredibilityValue()}}"></mat-progress-bar>
+            
+            <div class="orient-contents-horizontally">
+              <p class="source-vote-label">Not Credible</p>
+              <span class="horizontal-spacer"></span>
+              <p class="source-vote-label bold-text">{{source.UncredibilityRank}}</p>
+            </div>
+            <mat-progress-bar class="source-vote-progress-bar" color="primary" mode="determinate" value="{{source.UncredibilityValue()}}"></mat-progress-bar>
+
+            <div class="orient-contents-horizontally">
+              <p class="source-vote-label">Votes</p>
+              <span class="horizontal-spacer"></span>
+              <p class="bold-text">{{source.VoteCount()}}</p>
+            </div>
+          </div>
+        </mat-list>
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,189 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+// We should add more paletts for other universities as we add them
+// Define Custom Palettes
+
+$primary-color: (
+    50 : #fce0e5,
+    100 : #f9b3bf,
+    200 : #f58094,
+    300 : #f04d69,
+    400 : #ed2649,
+    500 : #EC3939,
+    600 : #e70024,
+    700 : #e4001f,
+    800 : #e10019,
+    900 : #db000f,
+    A100 : #f4f4f4,
+    A200 : #ffcfd1,
+    A400 : #ff9c9f,
+    A700 : #ff8386,
+    contrast: (
+        50 : #27272f,
+        100 : #27272f,
+        200 : #27272f,
+        300 : #27272f,
+        400 : #f4f4f4,
+        500 : #f4f4f4,
+        600 : #f4f4f4,
+        700 : #f4f4f4,
+        800 : #f4f4f4,
+        900 : #f4f4f4,
+        A100 : #27272f,
+        A200 : #27272f,
+        A400 : #27272f,
+        A700 : #27272f,
+    )
+);
+
+$accent-color: (
+    50 : #edf3fa,
+    100 : #d1e0f2,
+    200 : #b3c4e9,
+    300 : #95ade0,
+    400 : #7e8fda,
+    500 : #6772d3,
+    600 : #5f7dce,
+    700 : #5469c8,
+    800 : #4a56c2,
+    900 : #3956b7,
+    A100 : #f4f4f4,
+    A200 : #d0d7ff,
+    A400 : #9da7ff,
+    A700 : #8684ff,
+    contrast: (
+        50 : #27272f,
+        100 : #27272f,
+        200 : #27272f,
+        300 : #27272f,
+        400 : #27272f,
+        500 : #f4f4f4,
+        600 : #f4f4f4,
+        700 : #f4f4f4,
+        800 : #f4f4f4,
+        900 : #f4f4f4,
+        A100 : #27272f,
+        A200 : #27272f,
+        A400 : #27272f,
+        A700 : #27272f,
+    )
+);
+
+/*
+mat-palette([material-color], [default hue], [light hue], [dark hue]
+*/
+$proform-app-primary: mat-palette($primary-color, 500, 200, 700);
+$proform-app-accent:  mat-palette($accent-color, 500, 200, 700);
+$proform-app-warn:    mat-palette($mat-red, 800);
+
+$proform-app-theme: mat-light-theme($proform-app-primary, $proform-app-accent, $proform-app-warn);
+
+@include angular-material-theme($proform-app-theme);
+
+
+// Primary Background
+@mixin primary-background-theme($theme) {
+    $background: mat-palette($proform-app-primary, 500);
+
+    .primary-background {
+        background-color: mat-color($background) !important;
+        color: #f4f4f4 !important;
+    }
+}
+@mixin primary-light-background-theme($theme) {
+    $background: mat-palette($proform-app-primary, 200);
+
+    .primary-light-background {
+        background-color: mat-color($background) !important;
+    }
+}
+@mixin primary-dark-background-theme($theme) {
+    $background: mat-palette($proform-app-primary, 700);
+
+    .primary-dark-background {
+        background-color: mat-color($background) !important;
+        color: #f4f4f4 !important;
+    }
+}
+// Primary Border
+@mixin primary-border-theme($theme) {
+    $background: mat-palette($proform-app-primary, 500);
+
+    .primary-border {
+        border-color: mat-color($background) !important;
+    }
+}
+@mixin primary-light-border-theme($theme) {
+    $background: mat-palette($proform-app-primary, 200);
+
+    .primary-light-border {
+        border-color: mat-color($background) !important;
+    }
+}
+@mixin primary-dark-border-theme($theme) {
+    $background: mat-palette($proform-app-primary, 700);
+
+    .primary-dark-border {
+        border-color: mat-color($background) !important;
+    }
+}
+// Accent Background
+@mixin accent-background-theme($theme) {
+    $background: mat-palette($proform-app-accent, 500);
+
+    .accent-background {
+        background-color: mat-color($background) !important;
+        color: #f4f4f4 !important;
+    }
+}
+@mixin accent-light-background-theme($theme) {
+    $background: mat-palette($proform-app-accent, 200);
+
+    .accent-light-background {
+        background-color: mat-color($background) !important;
+    }
+}
+@mixin accent-dark-background-theme($theme) {
+    $background: mat-palette($proform-app-accent, 700);
+
+    .accent-dark-background {
+        background-color: mat-color($background) !important;
+        color: #f4f4f4 !important;
+    }
+}
+// Accent Border
+@mixin accent-border-theme($theme) {
+    $background: mat-palette($proform-app-accent, 500);
+
+    .accent-border {
+        border-color: mat-color($background) !important;
+    }
+}
+@mixin accent-light-border-theme($theme) {
+    $background: mat-palette($proform-app-accent, 200);
+
+    .accent-light-border {
+        border-color: mat-color($background) !important;
+    }
+}
+@mixin accent-dark-border-theme($theme) {
+    $background: mat-palette($proform-app-accent, 700);
+
+    .accent-dark-border {
+        border-color: mat-color($background) !important;
+    }
+}
+
+@include primary-background-theme($proform-app-theme);
+@include primary-light-background-theme($proform-app-theme);
+@include primary-dark-background-theme($proform-app-theme);
+@include primary-border-theme($proform-app-theme);
+@include primary-light-border-theme($proform-app-theme);
+@include primary-dark-border-theme($proform-app-theme);
+@include accent-background-theme($proform-app-theme);
+@include accent-light-background-theme($proform-app-theme);
+@include accent-dark-background-theme($proform-app-theme);
+@include accent-border-theme($proform-app-theme);
+@include accent-light-border-theme($proform-app-theme);
+@include accent-dark-border-theme($proform-app-theme);
